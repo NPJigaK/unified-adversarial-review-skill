@@ -20,7 +20,7 @@ skills/unified-adversarial-review/
 Install the whole directory. Do not copy only `SKILL.md`; the `references/`
 directory is part of the runtime instructions.
 
-License and provenance files are maintained at the repository root:
+License and provenance files are included in the installable Skill directory:
 `LICENSE`, `NOTICE`, and `UPSTREAM.md`.
 
 Only the install path and invocation syntax vary by client.

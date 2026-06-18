@@ -117,9 +117,6 @@ operability gaps.
 ```text
 README.md
 INSTALL.md
-LICENSE
-NOTICE
-UPSTREAM.md
 skills/unified-adversarial-review/
 ```
 
@@ -129,7 +126,11 @@ installed with the Skill.
 
 ## License And Provenance
 
-Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and
-[UPSTREAM.md](UPSTREAM.md). This is a separate adaptation and is not an OpenAI
-product or endorsement. License and provenance files are kept at the repository
-root and are not duplicated inside the installable Skill directory.
+Apache-2.0. See
+[skills/unified-adversarial-review/LICENSE](skills/unified-adversarial-review/LICENSE),
+[skills/unified-adversarial-review/NOTICE](skills/unified-adversarial-review/NOTICE),
+and
+[skills/unified-adversarial-review/UPSTREAM.md](skills/unified-adversarial-review/UPSTREAM.md).
+This is a separate adaptation and is not an OpenAI product or endorsement.
+License and provenance files are included inside the installable Skill
+directory so the distributed artifact is self-contained.
