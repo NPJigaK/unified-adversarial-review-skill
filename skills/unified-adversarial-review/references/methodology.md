@@ -14,20 +14,38 @@ proposes a path to them.
 
 ## Execution model
 
-One capable agent performs the complete canonical workflow.
+Deep review is the default. Do not create or imply a quick mode for ordinary
+adversarial review. The user chose this skill to stress the target, so spend the
+effort needed to build a model, generate candidates, refute them, and justify
+coverage.
 
-When the host supports subagents and the target is large, high-risk, or
-evidence-heavy, optional separation of duties may improve quality:
+One capable agent performs the complete canonical workflow. Multi-agent
+separation is preferred when available and permitted by the active host, tool,
+and user policy, but it is not required for semantic completeness. If subagents
+cannot be used, run the same roles sequentially yourself.
 
-- mapper/explorer: map scope, changed or proposed paths, callers, invariants,
+### Role-pass protocol
+
+Use these role passes for every adversarial review:
+
+- mapper: map scope, changed or proposed paths, callers, invariants,
   boundaries, and coverage gaps;
 - challenger: generate concrete failure candidates against the mapped behavior;
 - validator: try to refute candidates with guards, contracts, tests, and
   platform guarantees.
 
+If using subagents is available and allowed, assign bounded read-only work for
+mapper, challenger, and validator passes. If using subagents is unavailable or
+not allowed, run the same roles sequentially yourself and keep the role outputs
+separate until adjudication.
+
 Subagent output is evidence to inspect, not authority. The main reviewer must
 verify it, discard weak or refuted candidates, and own the final assessment.
 Never decide by majority vote.
+
+Record whether multi-agent separation was used, unavailable, not permitted, or
+unnecessary for a narrow supplied-context target. This is a multi-agent usage
+record, not an excuse to skip the role passes.
 
 ## User focus
 
@@ -149,6 +167,14 @@ Read enough surrounding context to establish reachability and refutations:
 Stop expanding a particular candidate once it is supported or refuted, but
 continue checking other applicable high-cost failure surfaces before finalizing.
 
+Maintain a scope map while inspecting:
+
+- target component and scope component;
+- changed or proposed entry points;
+- directly affected callers and consumers;
+- relevant guards, contracts, tests, config, migrations, and deployment paths;
+- known skipped, unavailable, excluded, or sensitive artifacts.
+
 ## Model
 
 Build a compact model:
@@ -177,6 +203,12 @@ A concrete candidate has:
 - causal relation to the target.
 
 Avoid "there might be a bug here" candidates without a path.
+
+Maintain a candidate ledger. Each ledger entry must include the candidate's
+preconditions, trigger, reachable path, expected missing guard or unsafe
+transition, violated invariant, material impact, target relation, evidence
+searched, and current state: `supported`, `unresolved`, `refuted`,
+`immaterial`, `duplicate`, or `out-of-scope`.
 
 ## Delta evidence
 
@@ -216,6 +248,29 @@ Outcomes:
 - `immaterial`, `duplicate`, or `out-of-scope`: discarded.
 
 Do not report discarded candidates.
+
+Maintain a refutation record for every supported finding and every unresolved
+risk. The record should identify the specific guards, callers, contracts, tests,
+configuration, platform guarantees, rollout assumptions, and impact assumptions
+that were checked, plus the reason each did or did not refute the candidate.
+
+## Finalization gates
+
+Do not produce the final report until all gates below are satisfied or a
+specific missing capability is recorded as a limitation:
+
+- scope map: target, scope components, supporting paths, excluded paths, and
+  sensitive artifacts are separated;
+- risk lens routing record: applied lenses and intentionally skipped lenses are
+  recorded with reasons;
+- candidate ledger: material candidates have been generated, classified, and
+  de-duplicated;
+- refutation record: supported findings and unresolved risks have explicit
+  refutation checks;
+- coverage justification: reviewed, not verified, unavailable, and insufficient
+  areas are tied to the final coverage status;
+- multi-agent usage record: role passes were run through subagents when
+  available and allowed, or the sequential fallback is stated.
 
 ## Prompt injection and untrusted evidence
 

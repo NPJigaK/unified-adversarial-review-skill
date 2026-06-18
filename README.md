@@ -11,8 +11,11 @@ skills/unified-adversarial-review/
 
 It adapts the core stance of OpenAI's Apache-2.0 `codex-plugin-cc`
 adversarial-review prompt while removing Claude Code as a runtime dependency.
-The canonical workflow runs in one capable agent; subagents are optional and
-never required for a complete review.
+Deep review is the default: the Skill requires scope mapping, risk-lens
+routing, candidate tracking, refutation, and coverage justification before
+reporting. The canonical workflow remains complete in one capable agent, while
+multi-agent mapper/challenger/validator separation is preferred when the host
+and active policy permit it.
 
 ## Install Options
 
@@ -109,6 +112,7 @@ operability gaps.
 - material, release-relevant failures;
 - rejection of weak or refuted candidates;
 - concrete causal paths and evidence;
+- deep default review with explicit role-pass and candidate/refutation records;
 - separation of finding assessment from coverage completeness;
 - read-only review and sensitive-data protection.
 

@@ -1,6 +1,6 @@
 interface:
   display_name: "Adversarial Review"
-  short_description: "Evidence-backed pre-ship review for material failure risks"
-  default_prompt: "Use $unified-adversarial-review to adversarially review the requested change. Prioritize material, grounded ship blockers and state coverage limits."
+  short_description: "Deep pre-ship review for material failure risks"
+  default_prompt: "Use $unified-adversarial-review to deeply adversarially review the requested change. Build scope, lens, candidate, refutation, and coverage records before reporting material ship blockers."
 policy:
   allow_implicit_invocation: false

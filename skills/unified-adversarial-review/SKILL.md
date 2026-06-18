@@ -1,14 +1,14 @@
 ---
 name: unified-adversarial-review
-description: Read-only adversarial review for code changes, PRs, diffs, commits, implementation plans, and pre-ship decisions. Use when the user explicitly asks for adversarial review, ship-blocker review, strict pre-ship review, or a material-risk assessment of whether a change should ship. Finds grounded failures in security, data integrity, migrations, concurrency, retries, compatibility, operability, resource use, and LLM/agent behavior. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup.
+description: Read-only deep adversarial review for code changes, PRs, diffs, commits, implementation plans, and pre-ship decisions. Use when the user explicitly asks for adversarial review, ship-blocker review, strict pre-ship review, or a material-risk assessment of whether a change should ship. Finds grounded failures in security, data integrity, migrations, concurrency, retries, compatibility, operability, resource use, and LLM/agent behavior. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup.
 ---
 
 <!--
 Adapted from OpenAI codex-plugin-cc:
 plugins/codex/prompts/adversarial-review.md
 
-Modified for portable single-agent execution, optional subagents, explicit
-scope and coverage, candidate refutation, conditional risk lenses, plan/design
+Modified for portable deep-default execution, role-pass review, explicit scope
+and coverage, candidate refutation, conditional risk lenses, plan/design
 review, and standalone Agent Skills use without Claude Code.
 -->
 
@@ -24,6 +24,12 @@ Optimize for both outcomes together:
 - avoid unsupported, refuted, unrelated, or immaterial findings.
 
 Do not trade precision for a longer issue list.
+
+Deep review is the default. Do not offer or choose a quick review mode unless
+the user explicitly narrows the task to a supplied-context answer or a status
+check. Do not finalize after a single skim. Before reporting, build and use a
+scope map, risk lens routing record, candidate ledger, refutation record, and
+coverage justification as described in `methodology.md`.
 
 ## Load references
 
@@ -51,20 +57,30 @@ Before reviewing, read:
   unless content inspection is explicitly authorized and safe.
 - Never quote secrets, tokens, keys, credentials, or PII. Redact values and
   mention only type, path, and relevance.
-- Complete the canonical review yourself. Subagents are optional. If the host
-  supports them and the target is large, high-risk, or evidence-heavy, they may
-  explore or validate bounded questions, but their output is evidence, not
-  authority, and you own final adjudication.
+- Complete the canonical review yourself. Multi-agent separation is preferred
+  when the host supports it and active tool/user policy permits it, but it is
+  not required for semantic completeness. If subagents are unavailable or not
+  permitted, run the same mapper, challenger, and validator role passes
+  sequentially yourself. Subagent output is evidence, not authority, and you own
+  final adjudication.
 - Do not invent findings. A clean result is valid when no material, supported
   finding survives verification.
 
 ## Workflow
 
-Follow this sequence:
+Follow this sequence as a deep review, not a quick checklist:
 
 ```text
 Frame -> Inspect -> Model -> Challenge -> Trace -> Refute -> Adjudicate -> Report
 ```
+
+Before finalizing, verify that the final answer can show the depth controls:
+
+- role passes completed or intentionally unavailable;
+- candidate ledger entries classified as supported, unresolved, refuted,
+  immaterial, duplicate, or out-of-scope;
+- refutation record for every supported finding and unresolved risk;
+- coverage gaps and the effect those gaps have on the assessment.
 
 ### 1. Frame
 
@@ -255,6 +271,21 @@ high | medium
 
 Capability mode:
 - ...
+
+Depth and orchestration:
+
+Role passes:
+- Mapper: ...
+- Challenger: ...
+- Validator: ...
+
+Candidate ledger:
+- Supported: ...
+- Unresolved: ...
+- Refuted/discarded: ...
+
+Multi-agent usage:
+- used | unavailable | not permitted | not needed because ...
 
 Reviewed:
 - ...
