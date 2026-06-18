@@ -85,6 +85,18 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         ):
             self.assertIn(required_instruction, normalized_text)
 
+    def test_methodology_requires_discovery_pass_before_candidates(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+
+        self.assertIn("discovery pass", text)
+        self.assertIn("before candidate generation", text)
+        self.assertIn("source -> transform -> sink", text)
+        self.assertIn("trust boundaries", text)
+        self.assertIn("state/lifecycle transitions", text)
+        self.assertIn("high-value assets", text)
+        self.assertIn("seed candidates", text)
+        self.assertIn("not as reportable evidence by itself", text)
+
 
 if __name__ == "__main__":
     unittest.main()
