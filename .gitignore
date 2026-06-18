@@ -10,5 +10,7 @@ venv/
 dist/
 build/
 *.egg-info/
+*.zip
+*.patch
 .DS_Store
 Thumbs.db

@@ -35,7 +35,7 @@ when they improve measured or practical review quality, but do not make them
 runtime requirements for the core review method.
 
 Current core implementation lives in
-[unified-adversarial-review/SKILL.md](../unified-adversarial-review/SKILL.md).
+[skills/unified-adversarial-review/SKILL.md](../skills/unified-adversarial-review/SKILL.md).
 
 ## Product Definition
 
@@ -117,7 +117,25 @@ scripts/
 tests/
 ```
 
-The v1 installed skill should contain only runtime material:
+The distribution repository uses the standard collection layout for installer
+discovery:
+
+```text
+skills/
+`-- unified-adversarial-review/
+    |-- SKILL.md
+    |-- agents/
+    |   `-- openai.yaml  # optional Codex invocation metadata
+    |-- references/
+    |   |-- methodology.md
+    |   |-- finding-calibration.md
+    |   `-- lenses.md
+    |-- LICENSE
+    |-- NOTICE
+    `-- UPSTREAM.md
+```
+
+When installed, the skill directory itself should contain only runtime material:
 
 ```text
 unified-adversarial-review/

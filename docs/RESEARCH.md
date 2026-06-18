@@ -828,7 +828,7 @@ Use instead:
 
 ## Recommended Skill Structure
 
-Repository-local skill location:
+Historical repository-local skill location considered during research:
 
 ```text
 .agents/skills/unified-adversarial-review/
@@ -849,6 +849,12 @@ Repository-local skill location:
 └── agents/
     └── openai.yaml
 ```
+
+Current distribution layout is recorded in `docs/DECISIONS.md` and
+`README.md`. The repository now keeps the installable runtime skill at
+`skills/unified-adversarial-review/` so common installers can discover
+`skills/<name>/SKILL.md`, while Codex project installs still place the copied or
+linked runtime directory under `.agents/skills/unified-adversarial-review/`.
 
 If using custom subagents:
 
