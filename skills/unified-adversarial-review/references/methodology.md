@@ -44,6 +44,15 @@ a role-pass output contract:
 - stop condition;
 - handoff to the next pass.
 
+Before starting role passes, divide the target so mapper, challenger, and
+validator do not duplicate the same search. Each role should state what it is
+intentionally not covering because another pass owns it.
+
+Mapper starts broad and identifies coverage gaps. Challenger uses the map to
+generate failure candidates rather than re-reading everything. Validator focuses
+on refutation checks and must not add new speculative findings unless they are
+handed back through the candidate ledger.
+
 If using subagents is available and allowed, assign bounded read-only work for
 mapper, challenger, and validator passes. If using subagents is unavailable or
 not allowed, run the same roles sequentially yourself and keep the role outputs

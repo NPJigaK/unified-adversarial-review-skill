@@ -67,6 +67,24 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         ):
             self.assertIn(required_field, text)
 
+    def test_methodology_prevents_role_pass_duplication_and_gaps(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        normalized_text = re.sub(r"\s+", " ", text)
+
+        for required_instruction in (
+            "divide the target",
+            "do not duplicate the same search",
+            "intentionally not covering because another pass owns it",
+            "mapper starts broad",
+            "identifies coverage gaps",
+            "challenger uses the map",
+            "rather than re-reading everything",
+            "validator focuses on refutation checks",
+            "must not add new speculative findings",
+            "handed back through the candidate ledger",
+        ):
+            self.assertIn(required_instruction, normalized_text)
+
 
 if __name__ == "__main__":
     unittest.main()
