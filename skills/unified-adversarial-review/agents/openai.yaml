@@ -1,5 +1,5 @@
 interface:
-  display_name: "Unified Adversarial Review"
+  display_name: "Adversarial Review"
   short_description: "Evidence-backed pre-ship review for material failure risks"
   default_prompt: "Use $unified-adversarial-review to adversarially review the requested change. Prioritize material, grounded ship blockers and state coverage limits."
 policy:
