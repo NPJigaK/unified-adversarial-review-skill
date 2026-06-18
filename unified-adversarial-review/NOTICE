@@ -1,0 +1,27 @@
+Unified Adversarial Review Skill
+
+This repository adapts ideas from OpenAI's codex-plugin-cc adversarial review prompt
+and surrounding review wrapper analysis.
+
+Upstream notice retained from openai/codex-plugin-cc:
+
+Copyright 2026 OpenAI
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+Modification notice:
+
+This repository is not an OpenAI product and is not endorsed by OpenAI.
+It is a separate adaptation implementing a portable Codex/Agent Skill based on
+the inspected upstream adversarial review method while removing Claude Code as
+a runtime dependency.
