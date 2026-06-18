@@ -28,8 +28,8 @@ Do not trade precision for a longer issue list.
 Deep review is the default. Do not offer or choose a quick review mode unless
 the user explicitly narrows the task to a supplied-context answer or a status
 check. Do not finalize after a single skim. Before reporting, build and use a
-scope map, risk lens routing record, candidate ledger, refutation record, and
-coverage justification as described in `methodology.md`.
+scope map, discovery map, risk lens routing record, candidate ledger,
+refutation record, and coverage justification as described in `methodology.md`.
 
 ## Load references
 
@@ -71,12 +71,13 @@ Before reviewing, read:
 Follow this sequence as a deep review, not a quick checklist:
 
 ```text
-Frame -> Inspect -> Model -> Challenge -> Trace -> Refute -> Adjudicate -> Report
+Frame -> Inspect -> Discovery -> Model -> Challenge -> Trace -> Refute -> Adjudicate -> Report
 ```
 
 Before finalizing, verify that the final answer can show the depth controls:
 
 - role passes completed or intentionally unavailable;
+- discovery map completed before candidate generation;
 - candidate ledger entries classified as supported, unresolved, refuted,
   immaterial, duplicate, or out-of-scope;
 - refutation record for every supported finding and unresolved risk;
@@ -120,7 +121,14 @@ Read the target and directly supporting context:
 Stay scoped. Read enough to prove or refute concrete risks without turning a
 small change into an unrelated repository audit.
 
-### 3. Model
+### 3. Discovery
+
+Before candidate generation, build a compact discovery map. Use it to seed
+candidates, not as reportable evidence by itself. Include changed or proposed
+entry points, source-to-sink flows, trust boundaries, lifecycle transitions, and
+high-value assets relevant to the target.
+
+### 4. Model
 
 Build the minimum model needed:
 
@@ -137,7 +145,7 @@ For a plan/design target, model the proposed components, contracts, state
 changes, controls, rollout, rollback, and operational assumptions. Do not
 require source lines that do not exist.
 
-### 4. Challenge
+### 5. Challenge
 
 Try to break the target. Start with expensive, dangerous, user-visible, or
 hard-to-detect failure modes:
@@ -155,7 +163,7 @@ hard-to-detect failure modes:
 Use [lenses.md](references/lenses.md) conditionally. Do not run every lens as a
 checklist.
 
-### 5. Trace
+### 6. Trace
 
 For each candidate, establish:
 
@@ -176,7 +184,7 @@ component, contract, or documented absence rather than inventing a source line.
 If the candidate cannot be causally tied to the target, do not report it as a
 finding.
 
-### 6. Refute
+### 7. Refute
 
 Before reporting a candidate, actively try to disprove it:
 
@@ -201,7 +209,7 @@ Classify candidates:
 Discard refuted, immaterial, duplicate, out-of-scope, and purely speculative
 candidates. Do not smuggle them back as findings or uncertainty.
 
-### 7. Adjudicate
+### 8. Adjudicate
 
 A final finding must be all of these:
 
@@ -217,7 +225,7 @@ Prefer one strong finding over several weak ones. Do not report style, naming,
 formatting, generic cleanup, architectural taste, missing tests without a
   concrete failure, or vague "could be better" concerns.
 
-### 8. Report
+### 9. Report
 
 Default to concise findings-first Markdown. Use the user's language when clear;
 otherwise use English.
@@ -278,6 +286,9 @@ Role passes:
 - Mapper: ...
 - Challenger: ...
 - Validator: ...
+
+Discovery map:
+- ...
 
 Candidate ledger:
 - Supported: ...
