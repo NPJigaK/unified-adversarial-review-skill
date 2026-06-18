@@ -195,6 +195,16 @@ not as reportable evidence by itself:
 - state/lifecycle transitions, retries, rollback, and irreversible effects;
 - high-value assets, sensitive data, and critical operations.
 
+Identify load-bearing external contracts during Inspect, not only during Refute.
+This applies when the target depends on framework, protocol, database,
+queue, cloud, model, or tool behavior. Prefer official documentation, primary
+source, or local contract tests for semantics that affect candidate generation.
+When such a contract affects candidate generation, record it in the scope map
+with the external contract or guarantee, source used or unavailable reason,
+candidate class it enables or rules out, and coverage effect if unresolved.
+Do not expand this into a broad dependency audit. Defer non-load-bearing
+semantics until refutation or coverage notes.
+
 Stop expanding a particular candidate once it is supported or refuted, but
 continue checking other applicable high-cost failure surfaces before finalizing.
 
@@ -240,6 +250,8 @@ preconditions, trigger, reachable path, expected missing guard or unsafe
 transition, violated invariant, material impact, target relation, evidence
 searched, and current state: `supported`, `unresolved`, `refuted`,
 `immaterial`, `duplicate`, or `out-of-scope`.
+When a candidate depends on external semantics, include the external contract
+evidence searched in the ledger entry.
 
 ## Delta evidence
 
@@ -303,6 +315,9 @@ specific missing capability is recorded as a limitation:
   refutation checks;
 - coverage justification: reviewed, not verified, unavailable, and insufficient
   areas are tied to the final coverage status;
+- external-contract coverage: load-bearing external contracts that affect
+  candidate generation are recorded in the scope map, candidate ledger, or
+  coverage limitations;
 - multi-agent usage record: role passes were run through subagents when
   available and allowed, or the sequential fallback is stated.
 

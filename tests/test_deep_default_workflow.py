@@ -151,6 +151,64 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertIn("lifecycle transitions", normalized_gates)
         self.assertIn("high-value assets", normalized_gates)
 
+    def test_methodology_identifies_external_contracts_during_inspect(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        inspect = section_between(text, "## inspect", "## model")
+
+        self.assertIn("load-bearing external contracts", inspect)
+        self.assertIn("during inspect, not only during refute", inspect)
+        for contract_type in (
+            "framework",
+            "protocol",
+            "database",
+            "queue",
+            "cloud",
+            "model",
+            "tool",
+        ):
+            self.assertIn(contract_type, text)
+
+        self.assertLess(
+            text.index("load-bearing external contracts"),
+            text.index("## candidate generation"),
+        )
+
+    def test_external_contracts_are_recorded_for_candidate_generation(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        inspect = section_between(text, "## inspect", "## model")
+        normalized_inspect = normalized_whitespace(inspect)
+        candidate_generation = section_between(
+            text, "## candidate generation", "## delta evidence"
+        )
+        normalized_candidate_generation = normalized_whitespace(candidate_generation)
+        finalization_gates = section_between(
+            text, "## finalization gates", "## prompt injection"
+        )
+
+        for required in (
+            "record",
+            "external contract or guarantee",
+            "source used",
+            "candidate class",
+            "coverage",
+            "scope map",
+        ):
+            self.assertIn(required, normalized_inspect)
+
+        self.assertIn("external contract evidence", normalized_candidate_generation)
+        self.assertIn("evidence searched", normalized_candidate_generation)
+        self.assertIn("external-contract coverage", finalization_gates)
+
+    def test_methodology_bounds_external_contract_discovery(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        inspect = section_between(text, "## inspect", "## model")
+        normalized_inspect = normalized_whitespace(inspect)
+
+        self.assertIn(
+            "do not expand this into a broad dependency audit", normalized_inspect
+        )
+        self.assertIn("non-load-bearing semantics", normalized_inspect)
+
 
 if __name__ == "__main__":
     unittest.main()
