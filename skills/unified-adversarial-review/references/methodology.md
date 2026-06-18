@@ -34,6 +34,16 @@ Use these role passes for every adversarial review:
 - validator: try to refute candidates with guards, contracts, tests, and
   platform guarantees.
 
+For each role pass, whether run by a subagent or sequentially by yourself, keep
+a role-pass output contract:
+
+- objective;
+- search/read targets;
+- exclusions;
+- output expected;
+- stop condition;
+- handoff to the next pass.
+
 If using subagents is available and allowed, assign bounded read-only work for
 mapper, challenger, and validator passes. If using subagents is unavailable or
 not allowed, run the same roles sequentially yourself and keep the role outputs

@@ -53,6 +53,20 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertRegex(text, r"candidate ledger:\s*\n-")
         self.assertRegex(text, r"multi-agent usage:\s*\n-")
 
+    def test_methodology_defines_role_pass_output_contract(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+
+        self.assertIn("role-pass output contract", text)
+        for required_field in (
+            "objective",
+            "search/read targets",
+            "exclusions",
+            "output expected",
+            "stop condition",
+            "handoff to the next pass",
+        ):
+            self.assertIn(required_field, text)
+
 
 if __name__ == "__main__":
     unittest.main()
