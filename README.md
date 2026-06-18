@@ -1,4 +1,4 @@
-# Unified Adversarial Review
+# Unified Adversarial Review Agent Skill
 
 A portable, read-only Agent Skill for adversarially reviewing code changes,
 implementation plans, and pre-ship decisions.
