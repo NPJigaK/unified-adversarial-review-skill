@@ -9,44 +9,9 @@ skills/unified-adversarial-review/
 Install that directory as a whole. Do not install the repository root as a
 Skill.
 
-## Universal Installer
+## Install Options
 
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review
-```
-
-## Codex Project Install
-
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review \
-  --agent codex
-```
-
-Manual project install:
-
-```text
-copy or symlink:
-  skills/unified-adversarial-review/
-
-to:
-  <repo>/.agents/skills/unified-adversarial-review/
-```
-
-Invoke explicitly:
-
-```text
-$unified-adversarial-review Review the current branch against main.
-Focus especially on rollback safety, data integrity, and retry behavior.
-Do not modify repository files.
-```
-
-Codex official docs describe repository skills under `.agents/skills`.
-Third-party installers may use different global paths for Codex user installs;
-verify global installs in your local Codex build before relying on them.
-
-## Codex Natural-Language Install
+### Codex with `$skill-installer`
 
 ```text
 Use $skill-installer to install the unified-adversarial-review skill from:
@@ -55,6 +20,54 @@ https://github.com/NPJigaK/unified-adversarial-review-skill/tree/main/skills/uni
 
 Install it for my user account. Inspect the skill contents before installing it,
 and do not modify the source repository.
+```
+
+### Manual copy
+
+Copy or symlink:
+
+```text
+skills/unified-adversarial-review/
+```
+
+to:
+
+```text
+<repo>/.agents/skills/unified-adversarial-review/
+```
+
+For Codex user/global installs, Codex official docs describe user skills under:
+
+```text
+$HOME/.agents/skills/
+```
+
+Third-party installers may use different global paths for Codex user installs;
+verify global installs in your local Codex build before relying on them.
+
+### Universal CLI
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review
+```
+
+Codex-specific CLI install:
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent codex
+```
+
+## Invoke
+
+Invoke the Skill explicitly:
+
+```text
+$unified-adversarial-review Review the current branch against main.
+Focus especially on rollback safety, data integrity, and retry behavior.
+Do not modify repository files.
 ```
 
 ## Use Without Installing

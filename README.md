@@ -14,26 +14,39 @@ adversarial-review prompt while removing Claude Code as a runtime dependency.
 The canonical workflow runs in one capable agent; subagents are optional and
 never required for a complete review.
 
-## Install
+## Install Options
+
+### Codex with `$skill-installer`
+
+```text
+Use $skill-installer to install the unified-adversarial-review skill from:
+
+https://github.com/NPJigaK/unified-adversarial-review-skill/tree/main/skills/unified-adversarial-review
+
+Install it for my user account. Inspect the skill contents before installing it,
+and do not modify the source repository.
+```
+
+### Manual copy
+
+```text
+copy skills/unified-adversarial-review/
+to   <repo>/.agents/skills/unified-adversarial-review/
+```
+
+### Universal CLI
 
 ```bash
 npx skills add NPJigaK/unified-adversarial-review-skill \
   --skill unified-adversarial-review
 ```
 
-Codex project install:
+Codex-specific CLI install:
 
 ```bash
 npx skills add NPJigaK/unified-adversarial-review-skill \
   --skill unified-adversarial-review \
   --agent codex
-```
-
-Manual Codex project install:
-
-```text
-copy skills/unified-adversarial-review/
-to   <repo>/.agents/skills/unified-adversarial-review/
 ```
 
 More install options are in [INSTALL.md](INSTALL.md).
