@@ -80,21 +80,37 @@ npx skills use \
 
 ## Other Agent Skills Clients
 
-Copy or link the whole directory:
+This Skill follows the portable Agent Skills `SKILL.md` directory layout. For
+compatible clients, copy or link the whole directory:
 
 ```text
 skills/unified-adversarial-review/
 ```
 
-into the target agent's project-scoped skills directory.
+into the target agent's skills directory. Do not copy only `SKILL.md`; the
+`references/` directory is part of the runtime instructions.
 
-Claude Code users may install the same Agent Skill into:
+### Claude Code
+
+Project-scoped install:
 
 ```text
 .claude/skills/unified-adversarial-review/
 ```
 
-or use:
+User/global install:
+
+```text
+~/.claude/skills/unified-adversarial-review/
+```
+
+Invoke with:
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+Claude Code may also be used through compatible installers, for example:
 
 ```bash
 npx skills add NPJigaK/unified-adversarial-review-skill \
@@ -102,4 +118,55 @@ npx skills add NPJigaK/unified-adversarial-review-skill \
   --agent claude-code
 ```
 
-This is compatibility only. Claude Code is not a runtime dependency.
+### Cursor
+
+Project-scoped install:
+
+```text
+.cursor/skills/unified-adversarial-review/
+```
+
+User/global install when supported by your Cursor version:
+
+```text
+~/.cursor/skills/unified-adversarial-review/
+```
+
+Invoke through Cursor's skill or slash-command UI, typically:
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+Compatible installers may also support Cursor, for example:
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent cursor
+```
+
+### Generic `.agents` layout
+
+Clients that follow the shared Agent Skills directory convention may also load:
+
+```text
+.agents/skills/unified-adversarial-review/
+```
+
+or:
+
+```text
+~/.agents/skills/unified-adversarial-review/
+```
+
+## Compatibility Notes
+
+- Codex is the primary target for this repository.
+- Claude Code and Cursor compatibility is based on the portable `SKILL.md`
+  layout, not on any Claude- or Cursor-specific runtime dependency.
+- `agents/openai.yaml` is Codex UI metadata. Other clients may ignore it without
+  changing the Skill semantics.
+- Invocation syntax is client-specific: Codex uses `$unified-adversarial-review`;
+  Claude Code and Cursor commonly use `/unified-adversarial-review` or a skill
+  menu.

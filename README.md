@@ -49,6 +49,22 @@ npx skills add NPJigaK/unified-adversarial-review-skill \
   --agent codex
 ```
 
+### Compatible Agent Skills clients
+
+This Skill follows the portable Agent Skills `SKILL.md` layout. Compatible
+clients can install the whole directory into their own skills directory, for
+example:
+
+```text
+Claude Code: .claude/skills/unified-adversarial-review/
+Cursor:      .cursor/skills/unified-adversarial-review/
+```
+
+Use the client's invocation syntax. Codex uses `$unified-adversarial-review`;
+Claude Code and Cursor commonly expose skills through `/unified-adversarial-review`
+or their slash-command skill menu. `agents/openai.yaml` is Codex UI metadata and
+is not required by other clients.
+
 More install options are in [INSTALL.md](INSTALL.md).
 
 ## Usage
