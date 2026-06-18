@@ -16,7 +16,7 @@ never required for a complete review.
 
 ## Install Options
 
-### Codex with `$skill-installer`
+### Codex
 
 ```text
 Use $skill-installer to install the unified-adversarial-review skill from:
@@ -27,43 +27,64 @@ Install it for my user account. Inspect the skill contents before installing it,
 and do not modify the source repository.
 ```
 
-### Manual copy
-
-```text
-copy skills/unified-adversarial-review/
-to   <repo>/.agents/skills/unified-adversarial-review/
-```
-
-### Universal CLI
-
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review
-```
-
-Codex-specific CLI install:
-
 ```bash
 npx skills add NPJigaK/unified-adversarial-review-skill \
   --skill unified-adversarial-review \
   --agent codex
 ```
 
-### Compatible Agent Skills clients
-
-This Skill follows the portable Agent Skills `SKILL.md` layout. Compatible
-clients can install the whole directory into their own skills directory, for
-example:
+Invoke with:
 
 ```text
-Claude Code: .claude/skills/unified-adversarial-review/
-Cursor:      .cursor/skills/unified-adversarial-review/
+$unified-adversarial-review Review the current branch against main.
 ```
 
-Use the client's invocation syntax. Codex uses `$unified-adversarial-review`;
-Claude Code and Cursor commonly expose skills through `/unified-adversarial-review`
-or their slash-command skill menu. `agents/openai.yaml` is Codex UI metadata and
-is not required by other clients.
+### Claude Code
+
+Copy `skills/unified-adversarial-review/` to:
+
+```text
+.claude/skills/unified-adversarial-review/
+```
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent claude-code
+```
+
+Invoke with:
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+### Cursor
+
+Copy `skills/unified-adversarial-review/` to:
+
+```text
+.cursor/skills/unified-adversarial-review/
+```
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent cursor
+```
+
+Invoke with:
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+### Agent Skills CLI
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review
+```
 
 More install options are in [INSTALL.md](INSTALL.md).
 
