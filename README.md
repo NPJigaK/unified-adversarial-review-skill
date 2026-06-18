@@ -131,4 +131,5 @@ installed with the Skill.
 
 Apache-2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and
 [UPSTREAM.md](UPSTREAM.md). This is a separate adaptation and is not an OpenAI
-product or endorsement.
+product or endorsement. License and provenance files are kept at the repository
+root and are not duplicated inside the installable Skill directory.
