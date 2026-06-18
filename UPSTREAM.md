@@ -84,5 +84,4 @@ Do not use as runtime dependency:
 - Claude command `allowed-tools`
 - Claude command `disable-model-invocation`
 
-This repository implements the method as a portable Codex/Agent Skill core
-with optional host adapters and quality tooling.
+This repository implements the method as a portable Codex/Agent Skill.
