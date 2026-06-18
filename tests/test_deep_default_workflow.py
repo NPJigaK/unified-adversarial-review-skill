@@ -10,6 +10,14 @@ METHODOLOGY = (
 )
 
 
+def section_between(text, start, end):
+    return text.split(start, 1)[1].split(end, 1)[0]
+
+
+def normalized_whitespace(text):
+    return re.sub(r"\s+", " ", text)
+
+
 class DeepDefaultWorkflowTests(unittest.TestCase):
     def test_skill_makes_deep_review_the_default(self):
         text = SKILL.read_text(encoding="utf-8").lower()
@@ -36,6 +44,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
 
         required_gates = [
             "scope map",
+            "discovery map",
             "risk lens routing record",
             "candidate ledger",
             "refutation record",
@@ -50,6 +59,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
 
         self.assertIn("depth and orchestration", text)
         self.assertRegex(text, r"role passes:\s*\n-")
+        self.assertRegex(text, r"discovery map:\s*\n-")
         self.assertRegex(text, r"candidate ledger:\s*\n-")
         self.assertRegex(text, r"multi-agent usage:\s*\n-")
 
@@ -96,6 +106,50 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertIn("high-value assets", text)
         self.assertIn("seed candidates", text)
         self.assertIn("not as reportable evidence by itself", text)
+
+    def test_discovery_map_is_part_of_top_level_review_contract(self):
+        text = SKILL.read_text(encoding="utf-8").lower()
+
+        self.assertIn("discovery map", text)
+        self.assertIn(
+            "frame -> inspect -> discovery -> model -> challenge -> trace -> refute -> adjudicate -> report",
+            text,
+        )
+        depth_controls = section_between(
+            text,
+            "before finalizing, verify that the final answer can show the depth controls:",
+            "### 1. frame",
+        )
+        self.assertIn("discovery map", depth_controls)
+
+    def test_methodology_connects_discovery_to_mapper_and_finalization_gate(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+
+        role_pass_protocol = section_between(
+            text,
+            "### role-pass protocol",
+            "## user focus",
+        )
+        normalized_role_pass = normalized_whitespace(role_pass_protocol)
+        self.assertRegex(normalized_role_pass, r"mapper:.*discovery map")
+        self.assertIn("entry points", normalized_role_pass)
+        self.assertIn("source-to-sink", normalized_role_pass)
+        self.assertIn("trust boundaries", normalized_role_pass)
+        self.assertIn("lifecycle transitions", normalized_role_pass)
+        self.assertIn("high-value assets", normalized_role_pass)
+
+        finalization_gates = section_between(
+            text,
+            "## finalization gates",
+            "## prompt injection",
+        )
+        normalized_gates = normalized_whitespace(finalization_gates)
+        self.assertIn("- discovery map:", normalized_gates)
+        self.assertIn("entry points", normalized_gates)
+        self.assertIn("source-to-sink", normalized_gates)
+        self.assertIn("trust boundaries", normalized_gates)
+        self.assertIn("lifecycle transitions", normalized_gates)
+        self.assertIn("high-value assets", normalized_gates)
 
 
 if __name__ == "__main__":

@@ -28,8 +28,9 @@ cannot be used, run the same roles sequentially yourself.
 
 Use these role passes for every adversarial review:
 
-- mapper: map scope, changed or proposed paths, callers, invariants,
-  boundaries, and coverage gaps;
+- mapper: map scope and build the discovery map, including entry points,
+  source-to-sink flows, trust boundaries, lifecycle transitions, high-value
+  assets, changed or proposed paths, callers, invariants, and coverage gaps;
 - challenger: generate concrete failure candidates against the mapped behavior;
 - validator: try to refute candidates with guards, contracts, tests, and
   platform guarantees.
@@ -291,6 +292,9 @@ specific missing capability is recorded as a limitation:
 
 - scope map: target, scope components, supporting paths, excluded paths, and
   sensitive artifacts are separated;
+- discovery map: changed or proposed entry points, source-to-sink flows, trust
+  boundaries, lifecycle transitions, and high-value assets were mapped before
+  candidate generation;
 - risk lens routing record: applied lenses and intentionally skipped lenses are
   recorded with reasons;
 - candidate ledger: material candidates have been generated, classified, and
