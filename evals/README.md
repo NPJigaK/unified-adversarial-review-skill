@@ -50,16 +50,6 @@ and a structured output schema that can be used by different agent runtimes.
   becomes read-only on October 31, 2026, and is scheduled to shut down on
   November 30, 2026. That rules out a hard dependency on the hosted platform:
   https://developers.openai.com/api/docs/deprecations
-- Anthropic's Agent Skills guidance also recommends starting with evaluation on
-  representative tasks before incrementally building skills:
-  https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
-- Promptfoo documents cross-agent coding evaluations for OpenAI Codex SDK,
-  OpenAI Codex app-server, Claude Agent SDK, OpenCode SDK, and plain LLM
-  baselines:
-  https://www.promptfoo.dev/docs/guides/evaluate-coding-agents/
-- Inspect AI is an open-source evaluation framework for coding, agentic tasks,
-  reasoning, knowledge, behavior, and multimodal understanding:
-  https://inspect.aisi.org.uk/
 
 ## Best-fit approach
 
@@ -80,16 +70,9 @@ unsupported findings, weak refutation, scope drift, and dishonest coverage.
 ## Optional runner adapters
 
 Keep the canonical assets runner-neutral. Add adapters only when a runner is
-actually used:
-
-- Promptfoo: best first adapter for cross-agent CI because its coding-agent
-  guide covers Codex SDK, Codex app-server, Claude Agent SDK, OpenCode SDK, and
-  plain LLM baselines.
-- Inspect AI: good fit for research-grade or security-oriented agentic task
-  evaluation when Python-based eval tasks and scorers are useful.
-- Direct agent CLI runs: useful for local spot checks in Codex, Claude Code,
-  Cursor, or other clients that can invoke the skill and return structured
-  output.
+actually used, and keep runner-specific setup, dependency, and source references
+inside that adapter's directory. This avoids turning the shared eval contract
+into a stale comparison of third-party tooling.
 
 Do not put runner configuration under `skills/unified-adversarial-review/`.
 Runner adapters belong under `evals/adapters/<runner>/` so the installable Skill

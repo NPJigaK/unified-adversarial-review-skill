@@ -52,7 +52,7 @@ class EvalsContractTests(unittest.TestCase):
         self.assertIn("Local evidence", text)
         self.assertIn("Primary-source evidence", text)
 
-    def test_eval_strategy_is_portable_and_not_hosted_evals_api_based(self):
+    def test_eval_strategy_is_runner_neutral_and_not_hosted_evals_api_based(self):
         text = read_text(README)
         normalized = " ".join(text.lower().split())
 
@@ -60,12 +60,19 @@ class EvalsContractTests(unittest.TestCase):
             "portable behavioral evaluation fixtures",
             "does not depend on the deprecated openai evals platform or api",
             "optional runner adapters",
-            "promptfoo",
-            "inspect ai",
-            "anthropic",
-            "cross-agent",
+            "runner-neutral",
+            "canonical assets",
+            "adapters/<runner>",
         ):
             self.assertIn(required, normalized)
+
+        for vendor_locked_phrase in (
+            "best first adapter",
+            "promptfoo:",
+            "inspect ai:",
+            "anthropic's agent skills",
+        ):
+            self.assertNotIn(vendor_locked_phrase, normalized)
 
         self.assertNotIn("https://developers.openai.com/api/docs/guides/agent-evals", text)
 
