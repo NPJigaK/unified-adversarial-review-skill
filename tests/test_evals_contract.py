@@ -44,13 +44,30 @@ class EvalsContractTests(unittest.TestCase):
         for primary_source in (
             "https://developers.openai.com/blog/eval-skills",
             "https://developers.openai.com/api/docs/guides/evaluation-best-practices",
-            "https://developers.openai.com/api/docs/guides/agent-evals",
+            "https://developers.openai.com/api/docs/deprecations",
             "https://developers.openai.com/codex/skills",
         ):
             self.assertIn(primary_source, text)
 
         self.assertIn("Local evidence", text)
         self.assertIn("Primary-source evidence", text)
+
+    def test_eval_strategy_is_portable_and_not_hosted_evals_api_based(self):
+        text = read_text(README)
+        normalized = " ".join(text.lower().split())
+
+        for required in (
+            "portable behavioral evaluation fixtures",
+            "does not depend on the deprecated openai evals platform or api",
+            "optional runner adapters",
+            "promptfoo",
+            "inspect ai",
+            "anthropic",
+            "cross-agent",
+        ):
+            self.assertIn(required, normalized)
+
+        self.assertNotIn("https://developers.openai.com/api/docs/guides/agent-evals", text)
 
     def test_evals_live_outside_the_installable_skill(self):
         text = read_text(README)

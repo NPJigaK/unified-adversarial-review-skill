@@ -2,7 +2,7 @@
 
 ## Decision: add evals
 
-Add repo-local evals for this skill.
+Add portable behavioral evaluation fixtures for this skill.
 
 The strongest evidence says this repository should include evals, but they
 should live outside `skills/unified-adversarial-review/` so the installable Skill
@@ -11,6 +11,10 @@ tests only prove that important instruction text is present. They do not test
 whether an agent using the skill actually distinguishes material findings from
 refuted candidates, reports trusted evidence, respects scope, resists prompt
 injection in target text, or marks limited coverage honestly.
+
+This suite does not depend on the deprecated OpenAI Evals platform or API. In
+this repository, "evals" means portable behavioral evaluation fixtures, a rubric,
+and a structured output schema that can be used by different agent runtimes.
 
 ## Local evidence
 
@@ -42,9 +46,20 @@ injection in target text, or marks limited coverage honestly.
   software tests are insufficient by themselves, evals should be task-specific,
   and "vibe-based evals" are an anti-pattern:
   https://developers.openai.com/api/docs/guides/evaluation-best-practices
-- OpenAI's agent evaluation guide says to move to datasets and eval runs when
-  repeatability is needed for benchmarking changes over time:
-  https://developers.openai.com/api/docs/guides/agent-evals
+- OpenAI's deprecations page says the hosted Evals platform is being deprecated,
+  becomes read-only on October 31, 2026, and is scheduled to shut down on
+  November 30, 2026. That rules out a hard dependency on the hosted platform:
+  https://developers.openai.com/api/docs/deprecations
+- Anthropic's Agent Skills guidance also recommends starting with evaluation on
+  representative tasks before incrementally building skills:
+  https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- Promptfoo documents cross-agent coding evaluations for OpenAI Codex SDK,
+  OpenAI Codex app-server, Claude Agent SDK, OpenCode SDK, and plain LLM
+  baselines:
+  https://www.promptfoo.dev/docs/guides/evaluate-coding-agents/
+- Inspect AI is an open-source evaluation framework for coding, agentic tasks,
+  reasoning, knowledge, behavior, and multimodal understanding:
+  https://inspect.aisi.org.uk/
 
 ## Best-fit approach
 
@@ -55,12 +70,30 @@ Use a staged eval suite:
 2. Keep behavioral eval inputs in `evals/cases/` as a small, curated dataset.
 3. Grade outputs with `evals/review-output.schema.json` and `evals/rubric.md`.
 4. Run model-assisted grading manually or in CI only when a runner is available;
-   do not make hosted Evals API usage a hard dependency.
+   do not make the deprecated OpenAI Evals platform or API a dependency.
 
 This is the best fit because it follows the official skill-eval pattern while
 avoiding unnecessary dependencies. It also matches the risk profile of this
 skill: the hardest regressions are not missing files, but false positives,
 unsupported findings, weak refutation, scope drift, and dishonest coverage.
+
+## Optional runner adapters
+
+Keep the canonical assets runner-neutral. Add adapters only when a runner is
+actually used:
+
+- Promptfoo: best first adapter for cross-agent CI because its coding-agent
+  guide covers Codex SDK, Codex app-server, Claude Agent SDK, OpenCode SDK, and
+  plain LLM baselines.
+- Inspect AI: good fit for research-grade or security-oriented agentic task
+  evaluation when Python-based eval tasks and scorers are useful.
+- Direct agent CLI runs: useful for local spot checks in Codex, Claude Code,
+  Cursor, or other clients that can invoke the skill and return structured
+  output.
+
+Do not put runner configuration under `skills/unified-adversarial-review/`.
+Runner adapters belong under `evals/adapters/<runner>/` so the installable Skill
+remains portable across agents.
 
 ## How to use the eval cases
 
