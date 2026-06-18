@@ -121,12 +121,15 @@ operability gaps.
 ```text
 README.md
 INSTALL.md
+evals/
 skills/unified-adversarial-review/
+tests/
 ```
 
-This repository is intentionally distribution-focused. Design notes, schemas,
-validators, and eval infrastructure are not bundled here because they are not
-installed with the Skill.
+This repository is intentionally distribution-focused. The installable Skill is
+only `skills/unified-adversarial-review/`. Eval fixtures, schemas, and tests live
+at the repository root so they can validate the Skill without being installed
+with the Skill.
 
 ## License And Provenance
 

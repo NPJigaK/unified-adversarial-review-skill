@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Unified Adversarial Review Eval Output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "case_id",
+    "finding_assessment",
+    "findings",
+    "unresolved",
+    "coverage",
+    "candidate_ledger",
+    "evidence_audit",
+    "rubric_result"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "finding_assessment": {
+      "type": "string",
+      "enum": [
+        "material-findings",
+        "no-material-findings"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "severity",
+          "title",
+          "affected_evidence",
+          "causal_path",
+          "change_relation",
+          "refutation",
+          "impact",
+          "recommendation",
+          "confidence",
+          "trusted_evidence_used"
+        ],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "affected_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "causal_path": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "preconditions",
+              "trigger",
+              "reachable_path",
+              "missing_guard_or_transition",
+              "violated_invariant"
+            ],
+            "properties": {
+              "preconditions": {
+                "type": "string"
+              },
+              "trigger": {
+                "type": "string"
+              },
+              "reachable_path": {
+                "type": "string"
+              },
+              "missing_guard_or_transition": {
+                "type": "string"
+              },
+              "violated_invariant": {
+                "type": "string"
+              }
+            }
+          },
+          "change_relation": {
+            "type": "string",
+            "enum": [
+              "introduced",
+              "worsened",
+              "exposed",
+              "proposed"
+            ]
+          },
+          "refutation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "impact": {
+            "type": "string",
+            "minLength": 1
+          },
+          "recommendation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium"
+            ]
+          },
+          "trusted_evidence_used": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "risk",
+          "missing_evidence",
+          "resolution_check"
+        ],
+        "properties": {
+          "risk": {
+            "type": "string"
+          },
+          "missing_evidence": {
+            "type": "string"
+          },
+          "resolution_check": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "capability_mode",
+        "reviewed",
+        "not_verified",
+        "coverage_reason"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "sufficient",
+            "limited",
+            "insufficient"
+          ]
+        },
+        "capability_mode": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "supplied-context",
+              "repository-read",
+              "git-aware",
+              "safe-exec"
+            ]
+          }
+        },
+        "reviewed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "not_verified": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverage_reason": {
+          "type": "string"
+        }
+      }
+    },
+    "candidate_ledger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "supported",
+        "unresolved",
+        "refuted_or_discarded"
+      ],
+      "properties": {
+        "supported": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "refuted_or_discarded": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence_audit": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "claim",
+          "evidence",
+          "why_trusted"
+        ],
+        "properties": {
+          "claim": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "why_trusted": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rubric_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pass",
+        "score",
+        "notes"
+      ],
+      "properties": {
+        "pass": {
+          "type": "boolean"
+        },
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
