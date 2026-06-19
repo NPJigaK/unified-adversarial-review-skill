@@ -18,7 +18,33 @@ def normalized_whitespace(text):
     return re.sub(r"\s+", " ", text)
 
 
+def word_count(text):
+    return len(re.findall(r"\S+", text))
+
+
 class DeepDefaultWorkflowTests(unittest.TestCase):
+    def test_top_level_skill_stays_compact_and_delegates_details(self):
+        text = SKILL.read_text(encoding="utf-8")
+        lower_text = text.lower()
+
+        self.assertLessEqual(word_count(text), 1000)
+        self.assertIn("methodology.md", lower_text)
+        self.assertIn("finding-calibration.md", lower_text)
+        self.assertIn("lenses.md", lower_text)
+        self.assertNotIn("### 1. frame", lower_text)
+        self.assertNotIn("### 9. report", lower_text)
+
+        methodology_text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        for detailed_section in (
+            "## target and scope",
+            "## inspect",
+            "## model",
+            "## candidate generation",
+            "## refutation pass",
+            "## finalization gates",
+        ):
+            self.assertIn(detailed_section, methodology_text)
+
     def test_skill_makes_deep_review_the_default(self):
         text = SKILL.read_text(encoding="utf-8").lower()
 
@@ -118,7 +144,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         depth_controls = section_between(
             text,
             "before finalizing, verify that the final answer can show the depth controls:",
-            "### 1. frame",
+            "## reporting",
         )
         self.assertIn("discovery map", depth_controls)
 
