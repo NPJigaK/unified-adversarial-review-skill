@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import re
 import unittest
 
@@ -7,6 +8,13 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "unified-adversarial-review" / "SKILL.md"
 METHODOLOGY = (
     ROOT / "skills" / "unified-adversarial-review" / "references" / "methodology.md"
+)
+FINDING_CALIBRATION = (
+    ROOT
+    / "skills"
+    / "unified-adversarial-review"
+    / "references"
+    / "finding-calibration.md"
 )
 
 
@@ -27,10 +35,23 @@ def frontmatter_value(text, key):
     match = re.search(rf"^{key}:\s*(.+)$", frontmatter, re.MULTILINE)
     if not match:
         raise AssertionError(f"Missing frontmatter key: {key}")
-    return match.group(1)
+    value = match.group(1).strip()
+    if value.startswith('"') and value.endswith('"'):
+        return json.loads(value)
+    return value
 
 
 class DeepDefaultWorkflowTests(unittest.TestCase):
+    def test_skill_file_stays_ascii_for_windows_default_validator(self):
+        try:
+            SKILL.read_bytes().decode("ascii")
+        except UnicodeDecodeError as exc:
+            self.fail(
+                "SKILL.md must stay ASCII-compatible so validators that read "
+                "with the Windows default encoding can run; use YAML unicode "
+                f"escapes for non-ASCII trigger words: {exc}"
+            )
+
     def test_skill_description_is_trigger_first_and_concise(self):
         text = SKILL.read_text(encoding="utf-8")
         description = frontmatter_value(text, "description")
@@ -40,6 +61,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertTrue(description.startswith("Use when "))
         for trigger in (
             "adversarial review",
+            "ship blocker",
             "ship-blocker review",
             "strict pre-ship review",
             "material-risk assessment",
@@ -48,6 +70,13 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
             "pre-ship decision",
         ):
             self.assertIn(trigger, lower_description)
+        for trigger in (
+            "敵対的レビュー",
+            "出荷前レビュー",
+            "重大リスク",
+            "厳しめにレビュー",
+        ):
+            self.assertIn(trigger, description)
         for boundary in (
             "ordinary style review",
             "broad refactoring advice",
@@ -120,6 +149,17 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertRegex(text, r"discovery map:\s*\n-")
         self.assertRegex(text, r"candidate ledger:\s*\n-")
         self.assertRegex(text, r"multi-agent usage:\s*\n-")
+
+    def test_report_template_matches_severity_calibration(self):
+        skill_text = SKILL.read_text(encoding="utf-8")
+        calibration_text = FINDING_CALIBRATION.read_text(encoding="utf-8")
+
+        for severity in ("Critical", "High", "Medium"):
+            self.assertIn(f"### {severity}", calibration_text)
+        self.assertIn("Do not emit `low` severity findings", calibration_text)
+
+        self.assertIn("### Critical | High | Medium - Title", skill_text)
+        self.assertNotIn("### High - Title", skill_text)
 
     def test_methodology_defines_role_pass_output_contract(self):
         text = METHODOLOGY.read_text(encoding="utf-8").lower()
