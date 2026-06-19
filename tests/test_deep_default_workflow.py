@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import re
 import unittest
 
@@ -34,10 +35,23 @@ def frontmatter_value(text, key):
     match = re.search(rf"^{key}:\s*(.+)$", frontmatter, re.MULTILINE)
     if not match:
         raise AssertionError(f"Missing frontmatter key: {key}")
-    return match.group(1)
+    value = match.group(1).strip()
+    if value.startswith('"') and value.endswith('"'):
+        return json.loads(value)
+    return value
 
 
 class DeepDefaultWorkflowTests(unittest.TestCase):
+    def test_skill_file_stays_ascii_for_windows_default_validator(self):
+        try:
+            SKILL.read_bytes().decode("ascii")
+        except UnicodeDecodeError as exc:
+            self.fail(
+                "SKILL.md must stay ASCII-compatible so validators that read "
+                "with the Windows default encoding can run; use YAML unicode "
+                f"escapes for non-ASCII trigger words: {exc}"
+            )
+
     def test_skill_description_is_trigger_first_and_concise(self):
         text = SKILL.read_text(encoding="utf-8")
         description = frontmatter_value(text, "description")

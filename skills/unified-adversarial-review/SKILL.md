@@ -1,6 +1,6 @@
 ---
 name: unified-adversarial-review
-description: Use when the user explicitly asks for adversarial review, 敵対的レビュー, ship-blocker review, ship blocker review, strict pre-ship review, 出荷前レビュー, material-risk assessment, 重大リスク, PR/diff/commit review, implementation-plan review, pre-ship decision, or 厳しめにレビュー. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup.
+description: "Use when the user explicitly asks for adversarial review, \u6575\u5bfe\u7684\u30ec\u30d3\u30e5\u30fc, ship-blocker review, ship blocker review, strict pre-ship review, \u51fa\u8377\u524d\u30ec\u30d3\u30e5\u30fc, material-risk assessment, \u91cd\u5927\u30ea\u30b9\u30af, PR/diff/commit review, implementation-plan review, pre-ship decision, or \u53b3\u3057\u3081\u306b\u30ec\u30d3\u30e5\u30fc. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup."
 ---
 
 <!--
