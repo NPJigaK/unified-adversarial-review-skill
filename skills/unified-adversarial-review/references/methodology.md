@@ -300,11 +300,15 @@ that were checked, plus the reason each did or did not refute the candidate.
 Before promoting a supported finding or unresolved risk, validate its evidence
 anchors. File/line anchors must exist in files actually read during this review,
 be within the reviewed scope component, and be consistent with the target
-relation. Plan/design anchors must identify the supplied section, interface
-contract, stated assumption, or documented missing control that supports the
-path. If anchors are missing, imprecise, outside scope, or inconsistent with the
-target relation, do not promote the candidate; re-check evidence, downgrade it
-to a concrete unresolved risk with a resolving check, or record a coverage gap.
+relation. For supplied-context reviews, supplied diff hunk, host-provided patch
+line, or supplied context section anchors are valid when they identify reviewed
+material actually inspected, remain within the supplied scope component, and
+preserve the target relation. Plan/design anchors must identify the supplied
+section, interface contract, stated assumption, or documented missing control
+that supports the path. If anchors are missing, imprecise, outside scope, or
+inconsistent with the target relation, do not promote the candidate; re-check
+evidence, downgrade it to a concrete unresolved risk with a resolving check, or
+record a coverage gap.
 
 ## Finalization gates
 
@@ -323,9 +327,10 @@ specific missing capability is recorded as a limitation:
 - refutation record: supported findings and unresolved risks have explicit
   refutation checks;
 - evidence anchor validation: final findings and unresolved risks have
-  file/line anchors or plan/design anchors that were checked against the
-  reviewed scope and target relation; uncertain anchors are either resolved
-  before reporting or stated as a coverage gap;
+  file/line anchors, supplied diff hunk anchors, host-provided patch line
+  anchors, supplied context section anchors, or plan/design anchors that were
+  checked against the reviewed scope and target relation; uncertain anchors are
+  either resolved before reporting or stated as a coverage gap;
 - coverage justification: reviewed, not verified, unavailable, and insufficient
   areas are tied to the final coverage status;
 - external-contract coverage: load-bearing external contracts that affect

@@ -354,6 +354,23 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         ):
             self.assertIn(required, normalized_refutation)
 
+    def test_evidence_anchor_validation_preserves_supplied_context_mode(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        refutation = section_between(text, "## refutation pass", "## finalization gates")
+        finalization_gates = section_between(
+            text, "## finalization gates", "## prompt injection"
+        )
+        normalized_refutation = normalized_whitespace(refutation)
+        normalized_gates = normalized_whitespace(finalization_gates)
+
+        for required in (
+            "supplied diff hunk",
+            "host-provided patch line",
+            "supplied context section",
+        ):
+            self.assertIn(required, normalized_refutation)
+            self.assertIn(required, normalized_gates)
+
     def test_methodology_bounds_external_contract_discovery(self):
         text = METHODOLOGY.read_text(encoding="utf-8").lower()
         inspect = section_between(text, "## inspect", "## model")
