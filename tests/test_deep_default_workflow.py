@@ -16,6 +16,7 @@ FINDING_CALIBRATION = (
     / "references"
     / "finding-calibration.md"
 )
+LENSES = ROOT / "skills" / "unified-adversarial-review" / "references" / "lenses.md"
 
 
 def section_between(text, start, end):
@@ -135,6 +136,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
             "risk lens routing record",
             "candidate ledger",
             "refutation record",
+            "evidence anchor validation",
             "coverage justification",
             "multi-agent usage record",
         ]
@@ -160,6 +162,26 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
 
         self.assertIn("### Critical | High | Medium - Title", skill_text)
         self.assertNotIn("### High - Title", skill_text)
+
+    def test_llm_agent_lens_covers_agentic_failure_modes(self):
+        text = LENSES.read_text(encoding="utf-8").lower()
+        llm_lens = section_between(text, "## llm / agent", "## lens selection record")
+        normalized_lens = normalized_whitespace(llm_lens)
+
+        for required in (
+            "indirect prompt injection",
+            "tool output",
+            "schema",
+            "allowlist",
+            "authorization",
+            "markdown/html",
+            "human approval",
+            "least privilege",
+            "memory or retrieval",
+            "model calls",
+            "cost amplification",
+        ):
+            self.assertIn(required, normalized_lens)
 
     def test_methodology_defines_role_pass_output_contract(self):
         text = METHODOLOGY.read_text(encoding="utf-8").lower()
@@ -296,6 +318,41 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertIn("external contract evidence", normalized_candidate_generation)
         self.assertIn("evidence searched", normalized_candidate_generation)
         self.assertIn("external-contract coverage", finalization_gates)
+
+    def test_methodology_requires_evidence_anchor_validation(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        finalization_gates = section_between(
+            text, "## finalization gates", "## prompt injection"
+        )
+        normalized_gates = normalized_whitespace(finalization_gates)
+
+        for required in (
+            "evidence anchor validation",
+            "final findings",
+            "unresolved risks",
+            "file/line anchors",
+            "plan/design anchors",
+            "reviewed scope",
+            "target relation",
+            "uncertain",
+            "coverage gap",
+        ):
+            self.assertIn(required, normalized_gates)
+
+    def test_refutation_record_checks_final_evidence_anchors(self):
+        text = METHODOLOGY.read_text(encoding="utf-8").lower()
+        refutation = section_between(text, "## refutation pass", "## finalization gates")
+        normalized_refutation = normalized_whitespace(refutation)
+
+        for required in (
+            "evidence anchors",
+            "exist",
+            "actually read",
+            "within the reviewed scope",
+            "consistent with the target relation",
+            "do not promote",
+        ):
+            self.assertIn(required, normalized_refutation)
 
     def test_methodology_bounds_external_contract_discovery(self):
         text = METHODOLOGY.read_text(encoding="utf-8").lower()
