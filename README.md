@@ -9,6 +9,20 @@ The installable Skill is:
 skills/unified-adversarial-review/
 ```
 
+## Quick Start
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent codex
+```
+
+```text
+$unified-adversarial-review Review the current branch against main.
+```
+
+Works with Codex, Claude Code, Cursor, and other Agent Skills clients.
+
 It adapts the core stance of OpenAI's Apache-2.0 `codex-plugin-cc`
 adversarial-review prompt while removing Claude Code as a runtime dependency.
 Deep review is the default: the Skill requires scope mapping, risk-lens
