@@ -47,6 +47,7 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertTrue(description.startswith("Use when "))
         for trigger in (
             "adversarial review",
+            "ship blocker",
             "ship-blocker review",
             "strict pre-ship review",
             "material-risk assessment",
@@ -55,6 +56,13 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
             "pre-ship decision",
         ):
             self.assertIn(trigger, lower_description)
+        for trigger in (
+            "敵対的レビュー",
+            "出荷前レビュー",
+            "重大リスク",
+            "厳しめにレビュー",
+        ):
+            self.assertIn(trigger, description)
         for boundary in (
             "ordinary style review",
             "broad refactoring advice",
