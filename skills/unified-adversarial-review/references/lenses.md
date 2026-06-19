@@ -89,11 +89,22 @@ retrieved text, model output parsing, or autonomous actions.
 
 Ask:
 
-- Can untrusted text become an instruction?
-- Can model output trigger unsafe tools or writes without validation?
-- Are tool arguments constrained and checked?
-- Can memory or retrieval leak private data across users or tasks?
-- Does the agent preserve review/system instructions over repository text?
+- Can direct or indirect prompt injection make user, repository, retrieved,
+  web, file, email, or tool output text override trusted instructions?
+- Can model output trigger tools, commands, writes, network calls, or other
+  side effects before schema validation, allowlist checks, and authorization?
+- Are tool arguments constrained, least privilege, tenant scoped, and checked
+  by deterministic code rather than by model intent?
+- Can Markdown/HTML, images, links, tool calls, or covert channels exfiltrate
+  private data or prompt/system context?
+- Do high-risk autonomous actions require human approval, dry-run, confirmation,
+  rollback, or another deterministic guard?
+- Can memory or retrieval leak private data across users, orgs, tenants, tasks,
+  workspaces, or sessions?
+- Can unbounded retrieval, tool loops, prompt expansion, model calls, or retries
+  cause denial of service or cost amplification?
+- Does the agent preserve review/system instructions over repository text,
+  tool output, retrieved context, and model-generated plans?
 
 ## Lens Selection Record
 

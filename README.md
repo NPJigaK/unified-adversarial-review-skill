@@ -228,11 +228,21 @@ This Skill narrows the method for agentic code and plan review:
 README.md
 INSTALL.md
 skills/unified-adversarial-review/
+evals/
+scripts/prepare_eval_workspace.py
 ```
 
-This repository is intentionally distribution-focused. Design notes, schemas,
-validators, and eval infrastructure are not bundled here because they are not
-installed with the Skill.
+This repository is intentionally distribution-focused. The installable artifact
+is `skills/unified-adversarial-review/`; maintainer-only design notes, schemas,
+validators, and eval infrastructure should stay outside that directory so they
+are not installed with the Skill.
+
+Maintainers can prepare forward-eval prompts and rubrics without adding a model
+or API runner:
+
+```bash
+python scripts/prepare_eval_workspace.py --out out/uars-evals
+```
 
 ## License And Provenance
 
