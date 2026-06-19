@@ -8,6 +8,13 @@ SKILL = ROOT / "skills" / "unified-adversarial-review" / "SKILL.md"
 METHODOLOGY = (
     ROOT / "skills" / "unified-adversarial-review" / "references" / "methodology.md"
 )
+FINDING_CALIBRATION = (
+    ROOT
+    / "skills"
+    / "unified-adversarial-review"
+    / "references"
+    / "finding-calibration.md"
+)
 
 
 def section_between(text, start, end):
@@ -120,6 +127,17 @@ class DeepDefaultWorkflowTests(unittest.TestCase):
         self.assertRegex(text, r"discovery map:\s*\n-")
         self.assertRegex(text, r"candidate ledger:\s*\n-")
         self.assertRegex(text, r"multi-agent usage:\s*\n-")
+
+    def test_report_template_matches_severity_calibration(self):
+        skill_text = SKILL.read_text(encoding="utf-8")
+        calibration_text = FINDING_CALIBRATION.read_text(encoding="utf-8")
+
+        for severity in ("Critical", "High", "Medium"):
+            self.assertIn(f"### {severity}", calibration_text)
+        self.assertIn("Do not emit `low` severity findings", calibration_text)
+
+        self.assertIn("### Critical | High | Medium - Title", skill_text)
+        self.assertNotIn("### High - Title", skill_text)
 
     def test_methodology_defines_role_pass_output_contract(self):
         text = METHODOLOGY.read_text(encoding="utf-8").lower()

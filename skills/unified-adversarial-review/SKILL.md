@@ -103,7 +103,7 @@ Terse, scope-qualified ship/no-ship summary.
 
 ## Findings
 
-### High - Title
+### Critical | High | Medium - Title
 
 Affected evidence:
 - path/to/file.ext:123 or plan section / contract / missing-control anchor
