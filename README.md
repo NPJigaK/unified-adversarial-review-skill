@@ -116,6 +116,95 @@ operability gaps.
 - separation of finding assessment from coverage completeness;
 - read-only review and sensitive-data protection.
 
+## How It Works
+
+The Skill turns adversarial review into a falsification workflow rather than a
+general checklist. A review follows this shape:
+
+```text
+Frame -> Inspect -> Discovery -> Model -> Challenge -> Trace -> Refute -> Adjudicate -> Report
+```
+
+In practice, that means the reviewer first defines the target, scope, available
+capabilities, and coverage gaps. It then maps entry points, data flows, trust
+boundaries, lifecycle transitions, and high-value assets before generating
+failure candidates.
+
+Every candidate must include realistic preconditions, a trigger, a reachable or
+proposed path, the missing guard or unsafe transition, the violated invariant,
+material impact, and the relation to the reviewed change or plan. Candidates
+are then actively refuted against guards, contracts, tests, configuration,
+rollout behavior, and platform guarantees before anything becomes a final
+finding.
+
+The final report separates:
+
+- supported material findings;
+- unresolved material uncertainty;
+- refuted or immaterial candidates, which are not reported as findings;
+- reviewed scope and coverage limitations.
+
+This structure is designed to make the output useful for ship/no-ship decisions
+without padding the report with style issues, generic cleanup, or speculative
+concerns.
+
+## Design Rationale And Provenance
+
+This repository combines a few established review ideas into a portable Agent
+Skill. It is not an OpenAI or Microsoft product, endorsement, certification, or
+official security process.
+
+### OpenAI Codex Influence
+
+The starting point is OpenAI's Apache-2.0
+[`codex-plugin-cc`](https://github.com/openai/codex-plugin-cc) adversarial
+review workflow. That plugin describes `/codex:adversarial-review` as a
+read-only, steerable review that challenges implementation and design choices,
+pressure-tests assumptions, and focuses on risk areas such as authorization,
+data loss, rollback, race conditions, and reliability.
+
+This Skill adapts that stance and material-finding bar while removing the
+Claude Code plugin runtime dependency. The pinned upstream source, hash, and
+adaptation boundary are recorded in
+[skills/unified-adversarial-review/UPSTREAM.md](skills/unified-adversarial-review/UPSTREAM.md).
+
+### Microsoft SDL And Threat Modeling Influence
+
+The methodology also borrows from public Microsoft Security Development
+Lifecycle and threat modeling guidance:
+
+- define the review target and security-relevant requirements before judging
+  implementation;
+- model components, data flows, trust boundaries, and important state
+  transitions;
+- identify concrete threats or failure modes;
+- verify whether mitigations, guards, and guarantees actually close the risk;
+- review accuracy, completeness, and unacceptable residual risk before release.
+
+Those ideas are reflected in the Skill's discovery map, risk-lens routing,
+candidate ledger, refutation records, and explicit coverage status. Useful
+public references include
+[Microsoft SDL](https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle),
+[Microsoft Threat Modeling](https://www.microsoft.com/en-us/securityengineering/sdl/threatmodeling),
+and the
+[Threat Modeling Tool overview](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool).
+
+### Skill-Specific Adaptation
+
+This Skill narrows the method for agentic code and plan review:
+
+- mapper, challenger, and validator role passes keep scope discovery,
+  candidate generation, and refutation distinct;
+- risk lenses are selected only when triggered by the target, avoiding broad
+  checklist theater;
+- a candidate ledger prevents weak, duplicate, unrelated, or refuted concerns
+  from leaking into the final report;
+- coverage status is separate from finding assessment, so "no material
+  findings" is never presented as proof of safety;
+- repository text and command output are treated as untrusted evidence, which
+  reduces prompt-injection and review-steering risk;
+- the review is read-only and secret-aware by default.
+
 ## Repository Layout
 
 ```text
