@@ -1,6 +1,6 @@
 ---
 name: unified-adversarial-review
-description: Read-only deep adversarial review for code changes, PRs, diffs, commits, implementation plans, and pre-ship decisions. Use when the user explicitly asks for adversarial review, ship-blocker review, strict pre-ship review, or a material-risk assessment of whether a change should ship. Finds grounded failures in security, data integrity, migrations, concurrency, retries, compatibility, operability, resource use, and LLM/agent behavior. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup.
+description: Use when the user explicitly asks for adversarial review, ship-blocker review, strict pre-ship review, material-risk assessment, PR/diff/commit review, implementation-plan review, or a pre-ship decision. Do not use for ordinary style review, broad refactoring advice, or low-value cleanup.
 ---
 
 <!--

@@ -22,7 +22,39 @@ def word_count(text):
     return len(re.findall(r"\S+", text))
 
 
+def frontmatter_value(text, key):
+    frontmatter = text.split("---", 2)[1]
+    match = re.search(rf"^{key}:\s*(.+)$", frontmatter, re.MULTILINE)
+    if not match:
+        raise AssertionError(f"Missing frontmatter key: {key}")
+    return match.group(1)
+
+
 class DeepDefaultWorkflowTests(unittest.TestCase):
+    def test_skill_description_is_trigger_first_and_concise(self):
+        text = SKILL.read_text(encoding="utf-8")
+        description = frontmatter_value(text, "description")
+        lower_description = description.lower()
+
+        self.assertLessEqual(len(description), 500)
+        self.assertTrue(description.startswith("Use when "))
+        for trigger in (
+            "adversarial review",
+            "ship-blocker review",
+            "strict pre-ship review",
+            "material-risk assessment",
+            "pr/diff/commit review",
+            "implementation-plan review",
+            "pre-ship decision",
+        ):
+            self.assertIn(trigger, lower_description)
+        for boundary in (
+            "ordinary style review",
+            "broad refactoring advice",
+            "low-value cleanup",
+        ):
+            self.assertIn(boundary, lower_description)
+
     def test_top_level_skill_stays_compact_and_delegates_details(self):
         text = SKILL.read_text(encoding="utf-8")
         lower_text = text.lower()
