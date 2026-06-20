@@ -6,7 +6,7 @@
 A portable, read-only Agent Skill for adversarially reviewing code changes,
 implementation plans, and pre-ship decisions.
 
-The installable Skill is:
+This repository ships one installable Skill:
 
 ```text
 skills/unified-adversarial-review/
@@ -26,87 +26,32 @@ $unified-adversarial-review Review the current branch against main.
 
 Works with Codex, Claude Code, Cursor, and other Agent Skills clients.
 
-It adapts the core stance of OpenAI's Apache-2.0 `codex-plugin-cc`
-adversarial-review prompt while removing Claude Code as a runtime dependency.
-Deep review is the default: the Skill requires scope mapping, risk-lens
-routing, candidate tracking, refutation, and coverage justification before
-reporting. The canonical workflow remains complete in one capable agent, while
-multi-agent mapper/challenger/validator separation is preferred when the host
-and active policy permit it.
+## Why This Skill Exists
 
-## Install Options
+### #1: Agent reviews stop too early
 
-### Codex
+The problem: ordinary agent review often skims the diff, finds one plausible
+issue, or accepts the happy path when nothing obvious breaks.
 
-```text
-Use $skill-installer to install the unified-adversarial-review skill from:
+The fix: deep review is the default. The Skill requires scope mapping,
+risk-lens routing, candidate tracking, refutation, and coverage justification
+before reporting.
 
-https://github.com/NPJigaK/unified-adversarial-review-skill/tree/main/skills/unified-adversarial-review
+### #2: Noisy findings hide the real blocker
 
-Install it for my user account. Inspect the skill contents before installing it,
-and do not modify the source repository.
-```
+The problem: style issues, cleanup suggestions, and speculative concerns make a
+review look busy while weakening the ship/no-ship signal.
 
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review \
-  --agent codex
-```
+The fix: final findings must be material, grounded, causally tied to the target,
+actionable, and not refuted by an existing guard or guarantee.
 
-Invoke with:
+### #3: "No findings" is easy to overread
 
-```text
-$unified-adversarial-review Review the current branch against main.
-```
+The problem: a clean review can be mistaken for proof that a change is safe.
 
-### Claude Code
-
-Copy `skills/unified-adversarial-review/` to:
-
-```text
-.claude/skills/unified-adversarial-review/
-```
-
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review \
-  --agent claude-code
-```
-
-Invoke with:
-
-```text
-/unified-adversarial-review Review the current branch against main.
-```
-
-### Cursor
-
-Copy `skills/unified-adversarial-review/` to:
-
-```text
-.cursor/skills/unified-adversarial-review/
-```
-
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review \
-  --agent cursor
-```
-
-Invoke with:
-
-```text
-/unified-adversarial-review Review the current branch against main.
-```
-
-### Agent Skills CLI
-
-```bash
-npx skills add NPJigaK/unified-adversarial-review-skill \
-  --skill unified-adversarial-review
-```
-
-More install options are in [INSTALL.md](INSTALL.md).
+The fix: finding assessment and coverage status are separate. A report can say
+there are no supported material findings while still naming coverage gaps and
+unresolved material uncertainty.
 
 ## Usage
 
@@ -158,7 +103,7 @@ The final report separates:
 
 - supported material findings;
 - unresolved material uncertainty;
-- refuted or immaterial candidates, which are not reported as findings;
+- discarded candidates, which are not reported as findings;
 - reviewed scope and coverage limitations.
 
 This structure is designed to make the output useful for ship/no-ship decisions
@@ -168,59 +113,133 @@ concerns.
 ## Design Rationale And Provenance
 
 This repository combines a few established review ideas into a portable Agent
-Skill. It is not an OpenAI or Microsoft product, endorsement, certification, or
+Skill. The method is intentionally grounded in quoted upstream guidance and in
+the installable Skill contract, not just in a high-level summary.
+
+This is not an OpenAI or Microsoft product, endorsement, certification, or
 official security process.
 
 ### OpenAI Codex Influence
 
 The starting point is OpenAI's Apache-2.0
 [`codex-plugin-cc`](https://github.com/openai/codex-plugin-cc) adversarial
-review workflow. That plugin describes `/codex:adversarial-review` as a
-read-only, steerable review that challenges implementation and design choices,
-pressure-tests assumptions, and focuses on risk areas such as authorization,
-data loss, rollback, race conditions, and reliability.
+review prompt:
+
+> "break confidence in the change, not to validate it"
+
+> "Report only material findings."
+
+Source:
+[`plugins/codex/prompts/adversarial-review.md`](https://github.com/openai/codex-plugin-cc/blob/807e03ac9d5aa23bc395fdec8c3767500a86b3cf/plugins/codex/prompts/adversarial-review.md)
+at pinned commit `807e03ac9d5aa23bc395fdec8c3767500a86b3cf`.
 
 This Skill adapts that stance and material-finding bar while removing the
-Claude Code plugin runtime dependency. The pinned upstream source, hash, and
-adaptation boundary are recorded in
+Claude Code plugin runtime dependency. The upstream prompt pin, SHA-256, Git
+blob hash, and adaptation boundary are recorded in
 [skills/unified-adversarial-review/UPSTREAM.md](skills/unified-adversarial-review/UPSTREAM.md).
+
+In this Skill, that becomes a read-only review contract: falsify confidence,
+trace concrete failure paths, refute candidates before reporting, and omit
+style, naming, cleanup, and unsupported speculation.
 
 ### Microsoft SDL And Threat Modeling Influence
 
 The methodology also borrows from public Microsoft Security Development
 Lifecycle and threat modeling guidance:
 
-- define the review target and security-relevant requirements before judging
-  implementation;
-- model components, data flows, trust boundaries, and important state
-  transitions;
-- identify concrete threats or failure modes;
-- verify whether mitigations, guards, and guarantees actually close the risk;
-- review accuracy, completeness, and unacceptable residual risk before release.
+> "starts with clearly defined security and privacy requirements"
 
-Those ideas are reflected in the Skill's discovery map, risk-lens routing,
-candidate ledger, refutation records, and explicit coverage status. Useful
-public references include
-[Microsoft SDL](https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle),
-[Microsoft Threat Modeling](https://www.microsoft.com/en-us/securityengineering/sdl/threatmodeling),
-and the
-[Threat Modeling Tool overview](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool).
+> "review all threat models for accuracy and completeness"
+
+Source:
+[Microsoft Security Development Lifecycle](https://learn.microsoft.com/en-us/compliance/assurance/assurance-microsoft-security-development-lifecycle).
+
+Microsoft's threat modeling guidance also lists:
+
+> "Validating that threats have been mitigated."
+
+Source:
+[Microsoft Threat Modeling](https://www.microsoft.com/en-us/securityengineering/sdl/threatmodeling).
+
+The
+[Threat Modeling Tool overview](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool)
+is another useful public reference for modeling components, data flows, and
+security boundaries.
 
 ### Skill-Specific Adaptation
 
-This Skill narrows the method for agentic code and plan review:
+This repository narrows those sources for agentic code and plan review:
 
-- mapper, challenger, and validator role passes keep scope discovery,
-  candidate generation, and refutation distinct;
-- risk lenses are selected only when triggered by the target, avoiding broad
-  checklist theater;
-- a candidate ledger prevents weak, duplicate, unrelated, or refuted concerns
-  from leaking into the final report;
-- coverage status is separate from finding assessment, so "no material
-  findings" is never presented as proof of safety;
-- repository text and command output are treated as untrusted evidence, which
-  reduces prompt-injection and review-steering risk;
-- the review is read-only and secret-aware by default.
+| Source idea | Skill implementation |
+| --- | --- |
+| Challenge the change rather than validate intent | read-only falsification workflow |
+| Identify concrete threats before judging safety | discovery map before candidate generation |
+| Validate mitigations | candidate ledger and refutation records |
+| Review completeness before release | separate coverage status and finalization gates |
+| Agent inputs can be hostile or misleading | repository text and command output are treated as untrusted evidence |
+
+That adaptation is implemented in the Skill files themselves:
+
+- [SKILL.md](skills/unified-adversarial-review/SKILL.md) defines the top-level
+  contract, non-negotiables, and report shape;
+- [methodology.md](skills/unified-adversarial-review/references/methodology.md)
+  defines the full workflow, scope rules, role-pass protocol, candidate ledger,
+  refutation pass, and finalization gates;
+- [finding-calibration.md](skills/unified-adversarial-review/references/finding-calibration.md)
+  defines materiality, severity, confidence, uncertainty, and coverage
+  calibration;
+- [lenses.md](skills/unified-adversarial-review/references/lenses.md) defines
+  conditional risk lenses without turning the review into broad checklist
+  theater.
+
+## Install Options
+
+The Skill content is the same across clients; only install location and
+invocation syntax vary. Detailed paths, user/global installs, and `npx skills
+use` examples are in [INSTALL.md](INSTALL.md).
+
+### Codex
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent codex
+```
+
+```text
+$unified-adversarial-review Review the current branch against main.
+```
+
+### Claude Code
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent claude-code
+```
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+### Cursor
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review \
+  --agent cursor
+```
+
+```text
+/unified-adversarial-review Review the current branch against main.
+```
+
+### Agent Skills CLI
+
+```bash
+npx skills add NPJigaK/unified-adversarial-review-skill \
+  --skill unified-adversarial-review
+```
 
 ## Repository Layout
 
