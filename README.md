@@ -2,6 +2,7 @@
 
 [![Latest release](https://img.shields.io/github/v/release/NPJigaK/unified-adversarial-review-skill?label=release)](https://github.com/NPJigaK/unified-adversarial-review-skill/releases/latest)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](skills/unified-adversarial-review/LICENSE)
+[![SkillSpector scan](https://github.com/NPJigaK/unified-adversarial-review-skill/actions/workflows/skillspector.yml/badge.svg?branch=main)](https://github.com/NPJigaK/unified-adversarial-review-skill/actions/workflows/skillspector.yml?query=branch%3Amain)
 
 A portable, read-only Agent Skill for adversarially reviewing code changes,
 implementation plans, and pre-ship decisions.
