@@ -1,0 +1,27 @@
+name: SkillSpector
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    name: Scan skills
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Run SkillSpector
+        uses: NPJigaK/skillspector-action@main
+        with:
+          path: .
+          changed-only: false
+          upload-sarif: true
+          fail-on: none
